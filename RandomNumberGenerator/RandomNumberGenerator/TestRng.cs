@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Accord.Statistics.Testing;
+using RandomNumberGenerator.RNG;
 
 namespace RandomNumberGenerator
 {
-    public class TestRng
+    public static class TestRng
     {
-        private LehmerRng _lehmerRng;
-
-        public TestRng(LehmerRng lehmerRng)
+        public static void TestChi<T>(T rng) where T: IRngInterface
         {
-            _lehmerRng = lehmerRng;
-        }
+            Console.WriteLine($"Testing distribution with the Chi Square test for the {rng.Name}:\n");
 
-        public void TestChi()
-        {
-            Console.WriteLine($"Testing distribution with the Chi Square test:\n");
+            var stopwatch = Stopwatch.StartNew();
 
             double sampleSize = 100000;
             var numsAmount = 10;
@@ -24,7 +21,7 @@ namespace RandomNumberGenerator
             var observedDict = new Dictionary<int, int>();
             for (var i = 0; i < sampleSize * numsAmount; i++)
             {
-                var num = _lehmerRng.Next(numsAmount);
+                var num = rng.Next(numsAmount);
 
                 if (observedDict.ContainsKey(num))
                 {
@@ -53,11 +50,15 @@ namespace RandomNumberGenerator
 
             var pValue = chi.PValue;
             var significant = chi.Significant;
+            stopwatch.Stop();
 
             Console.WriteLine($"Expected distribution: {sampleSize} for each number");
             Console.WriteLine($"Observed distribution: \n{string.Join("\n", observedDict.OrderBy(k => k.Key))}");
             Console.WriteLine($"\nPValue = {pValue}");
             Console.WriteLine($"Significant = {significant}");
+            Console.WriteLine($"Time elapsed: {stopwatch.ElapsedMilliseconds} miliseconds");
+            Console.WriteLine("---------------------------------");
+
         }
     }
 }

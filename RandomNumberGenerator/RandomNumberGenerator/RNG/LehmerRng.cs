@@ -1,14 +1,16 @@
 ﻿using System;
 
-namespace RandomNumberGenerator
+namespace RandomNumberGenerator.RNG
 {
-    public class LehmerRng
+    public class LehmerRng : IRngInterface
     {
         private const int A = 16807;
         private const int M = 2147483647;
         private const int Q = 127773;
         private const int R = 2836;
         private int _seed;
+
+        public string Name => "Lehmer RNG";
 
         public LehmerRng(int seed)
         {
