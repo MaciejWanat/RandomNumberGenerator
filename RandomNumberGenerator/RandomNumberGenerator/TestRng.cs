@@ -4,13 +4,13 @@ using Accord.Statistics.Testing;
 
 namespace RandomNumberGenerator
 {
-    public class TestLehmer
+    public class TestRng
     {
-        private Rng _lehmerRng;
+        private Rng _rng;
 
-        public TestLehmer(Rng lehmerRng)
+        public TestRng(Rng rng)
         {
-            _lehmerRng = lehmerRng;
+            _rng = rng;
         }
 
         public void TestChi()
