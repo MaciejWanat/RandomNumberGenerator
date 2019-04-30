@@ -7,25 +7,24 @@ namespace RandomNumberGenerator
 {
     public class TestRng
     {
-        private Rng _rng;
+        private LehmerRng _lehmerRng;
 
-        public TestRng(Rng rng)
+        public TestRng(LehmerRng lehmerRng)
         {
-            _rng = rng;
+            _lehmerRng = lehmerRng;
         }
 
         public void TestChi()
         {
             Console.WriteLine($"Testing distribution with the Chi Square test:\n");
 
-            var rnd = new Random();
             double sampleSize = 100000;
-            var numsAmount = 100;
+            var numsAmount = 10;
 
             var observedDict = new Dictionary<int, int>();
             for (var i = 0; i < sampleSize * numsAmount; i++)
             {
-                var num = rnd.Next(numsAmount);
+                var num = _lehmerRng.Next(numsAmount);
 
                 if (observedDict.ContainsKey(num))
                 {

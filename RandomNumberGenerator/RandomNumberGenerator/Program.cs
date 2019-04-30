@@ -9,10 +9,10 @@ namespace RandomNumberGenerator
             var rnd = new Random();
             var seed = rnd.Next();
 
-            var lehmerRng = new Rng(seed);
-            var testLehmer = new TestRng(lehmerRng);
+            var lehmerRng = new LehmerRng(seed);
+            var test = new TestRng(lehmerRng);
 
-            testLehmer.TestChi();
+            test.TestChi();
 
             Console.ReadLine();
         }
