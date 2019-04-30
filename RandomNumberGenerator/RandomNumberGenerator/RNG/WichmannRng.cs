@@ -8,7 +8,7 @@ namespace RandomNumberGenerator.RNG
         private double _s2;
         private double _s3;
 
-        public string Name => "Wichmann-Hill algorithm";
+        public string Name => "Wichmann-Hill Algorithm";
 
         public WichmannRng(int seed)
         {

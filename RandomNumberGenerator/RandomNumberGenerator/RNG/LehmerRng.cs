@@ -10,7 +10,7 @@ namespace RandomNumberGenerator.RNG
         private const int R = 2836;
         private int _seed;
 
-        public string Name => "Lehmer RNG";
+        public string Name => "Lehmer Algorithm";
 
         public LehmerRng(int seed)
         {
