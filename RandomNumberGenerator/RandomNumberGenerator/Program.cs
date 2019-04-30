@@ -10,15 +10,20 @@ namespace RandomNumberGenerator
         {
             var rnd = new Random();
             var seed = rnd.Next();
+            var wichSeed = rnd.Next(30000);
 
             var lehmerRng = new LehmerRng(seed);
+            var wichmannRng = new WichmannRng(wichSeed);
             var buildInRng = new BuildInRng();
+
+            var buildInChiResult = TestRng.TestChi(buildInRng);
+            OutputBuilder.WriteOutput(buildInChiResult);
 
             var lehmerChiResult = TestRng.TestChi(lehmerRng);
             OutputBuilder.WriteOutput(lehmerChiResult);
 
-            var buildInChiResult = TestRng.TestChi(buildInRng);
-            OutputBuilder.WriteOutput(buildInChiResult);
+            var wichmannChiResult = TestRng.TestChi(wichmannRng);
+            OutputBuilder.WriteOutput(wichmannChiResult);
 
             Console.ReadLine();
         }
