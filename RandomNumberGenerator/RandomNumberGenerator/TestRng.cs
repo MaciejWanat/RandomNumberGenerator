@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Accord.Statistics.Testing;
 
 namespace RandomNumberGenerator
@@ -15,12 +16,16 @@ namespace RandomNumberGenerator
 
         public void TestChi()
         {
+            Console.WriteLine($"Testing distribution with the Chi Square test:\n");
+
             var rnd = new Random();
+            double sampleSize = 100000;
+            var numsAmount = 100;
 
             var observedDict = new Dictionary<int, int>();
-            for (var i = 0; i < 1000 * 10; i++)
+            for (var i = 0; i < sampleSize * numsAmount; i++)
             {
-                var num = rnd.Next(10);
+                var num = rnd.Next(numsAmount);
 
                 if (observedDict.ContainsKey(num))
                 {
@@ -30,24 +35,29 @@ namespace RandomNumberGenerator
                 {
                     observedDict[num] = 1;
                 }
-
             }
 
-            double[] observed =
+            var observed = Enumerable.Repeat((double) 0, numsAmount).ToArray();
+            for (var i = 0; i < numsAmount; i++)
             {
-                observedDict[0], observedDict[1], observedDict[2], observedDict[3], observedDict[4],
-                observedDict[5], observedDict[6], observedDict[7], observedDict[8], observedDict[9]
-            };
+                if (observedDict.ContainsKey(i))
+                {
+                    observed[i] = observedDict[i];
+                }
+            }
 
-            double[] expected = { 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000 };
+            var expectedEnumerable = Enumerable.Repeat(sampleSize, numsAmount);
+            var expected = expectedEnumerable.ToArray();
 
-            int degreesOfFreedom = 1;
+            var degreesOfFreedom = 1;
             var chi = new ChiSquareTest(expected, observed, degreesOfFreedom);
 
-            double pvalue = chi.PValue;
-            bool significant = chi.Significant;
+            var pValue = chi.PValue;
+            var significant = chi.Significant;
 
-            Console.WriteLine($"PValue = {pvalue}");
+            Console.WriteLine($"Expected distribution: {sampleSize} for each number");
+            Console.WriteLine($"Observed distribution: \n{string.Join("\n", observedDict.OrderBy(k => k.Key))}");
+            Console.WriteLine($"\nPValue = {pValue}");
             Console.WriteLine($"Significant = {significant}");
         }
     }
