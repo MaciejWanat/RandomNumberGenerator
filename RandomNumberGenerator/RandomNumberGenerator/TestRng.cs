@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Accord.Statistics.Testing;
@@ -16,9 +15,10 @@ namespace RandomNumberGenerator
 
             double sampleSize = 100000;
             var numsAmount = 10;
+            var totalDraws = sampleSize * numsAmount;
 
             var observedDict = new Dictionary<int, int>();
-            for (var i = 0; i < sampleSize * numsAmount; i++)
+            for (var i = 0; i < totalDraws; i++)
             {
                 var num = rng.Next(numsAmount);
 
@@ -58,7 +58,8 @@ namespace RandomNumberGenerator
                 PValue = pValue,
                 RngName = rng.Name,
                 SampleSize = sampleSize,
-                TimeElapsedMs = stopwatch.ElapsedMilliseconds
+                TimeElapsedMs = stopwatch.ElapsedMilliseconds,
+                TotalDraws = totalDraws
             };
         }
     }

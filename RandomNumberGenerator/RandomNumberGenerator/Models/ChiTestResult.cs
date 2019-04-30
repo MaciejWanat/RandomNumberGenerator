@@ -15,5 +15,7 @@ namespace RandomNumberGenerator.Models
         public Dictionary<int, int> ObservedDict { get; set; }
 
         public double SampleSize { get; set; }
+
+        public double TotalDraws { get; set; }
     }
 }

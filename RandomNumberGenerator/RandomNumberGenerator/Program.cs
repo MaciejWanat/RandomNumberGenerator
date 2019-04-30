@@ -14,6 +14,7 @@ namespace RandomNumberGenerator
 
             var lehmerRng = new LehmerRng(seed);
             var wichmannRng = new WichmannRng(wichSeed);
+            var linearConRng = new LinearConRng(seed);
             var buildInRng = new BuildInRng();
 
             var buildInChiResult = TestRng.TestChi(buildInRng);
@@ -24,6 +25,9 @@ namespace RandomNumberGenerator
 
             var wichmannChiResult = TestRng.TestChi(wichmannRng);
             OutputBuilder.WriteOutput(wichmannChiResult);
+
+            var linearConResult = TestRng.TestChi(linearConRng);
+            OutputBuilder.WriteOutput(linearConResult);
 
             Console.ReadLine();
         }

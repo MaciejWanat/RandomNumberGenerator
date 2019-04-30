@@ -31,7 +31,7 @@ namespace RandomNumberGenerator.RNG
 
         public int Next(int max)
         {
-            return (int) ((max - 0) * Next() + 0);
+            return (int) (max * Next());
         }
     }
 }
