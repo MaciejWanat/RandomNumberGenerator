@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Accord.Statistics.Testing;
+using RandomNumberGenerator.Models;
 using RandomNumberGenerator.RNG;
 
 namespace RandomNumberGenerator
 {
     public static class TestRng
     {
-        public static void TestChi<T>(T rng) where T: IRngInterface
+        public static ChiTestResult TestChi<T>(T rng) where T: IRngInterface
         {
-            Console.WriteLine($"Testing distribution with the Chi Square test for the {rng.Name}:\n");
-
             var stopwatch = Stopwatch.StartNew();
 
             double sampleSize = 100000;
@@ -52,13 +51,15 @@ namespace RandomNumberGenerator
             var significant = chi.Significant;
             stopwatch.Stop();
 
-            Console.WriteLine($"Expected distribution: {sampleSize} for each number");
-            Console.WriteLine($"Observed distribution: \n{string.Join("\n", observedDict.OrderBy(k => k.Key))}");
-            Console.WriteLine($"\nPValue = {pValue}");
-            Console.WriteLine($"Significant = {significant}");
-            Console.WriteLine($"Time elapsed: {stopwatch.ElapsedMilliseconds} miliseconds");
-            Console.WriteLine("---------------------------------");
-
+            return new ChiTestResult
+            {
+                IsSignificant = significant,
+                ObservedDict = observedDict,
+                PValue = pValue,
+                RngName = rng.Name,
+                SampleSize = sampleSize,
+                TimeElapsedMs = stopwatch.ElapsedMilliseconds
+            };
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using RandomNumberGenerator.Helpers;
 using RandomNumberGenerator.RNG;
 
 namespace RandomNumberGenerator
@@ -13,8 +14,11 @@ namespace RandomNumberGenerator
             var lehmerRng = new LehmerRng(seed);
             var buildInRng = new BuildInRng();
 
-            TestRng.TestChi(lehmerRng);
-            TestRng.TestChi(buildInRng);
+            var lehmerChiResult = TestRng.TestChi(lehmerRng);
+            OutputBuilder.WriteOutput(lehmerChiResult);
+
+            var buildInChiResult = TestRng.TestChi(buildInRng);
+            OutputBuilder.WriteOutput(buildInChiResult);
 
             Console.ReadLine();
         }
