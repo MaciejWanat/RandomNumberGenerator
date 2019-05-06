@@ -7,5 +7,7 @@
         public MeanTestSettings MeanTest { get; set; }
 
         public TimeTestSettings TimeTest { get; set; }
+
+        public StandardDeviationTestSettings StandardDeviationTest { get; set; }
     }
 }

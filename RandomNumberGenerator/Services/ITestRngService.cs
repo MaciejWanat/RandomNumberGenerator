@@ -10,5 +10,7 @@ namespace RandomNumberGenerator.Services
         MeanTestResult MeanTest<T>(T rng) where T : IRngInterface;
 
         TimeTestResult TimeTest<T>(T rng) where T : IRngInterface;
+
+        StandardDeviationTestResult StandardDeviationTest<T>(T rng) where T : IRngInterface;
     }
 }

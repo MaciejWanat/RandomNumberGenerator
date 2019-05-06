@@ -24,6 +24,8 @@ namespace RandomNumberGenerator.Helpers
             WriteMean(results);
             Console.WriteLine("---------------------------------");
             WriteTime(results);
+            Console.WriteLine("---------------------------------");
+            WriteStandardDeviation(results);
         }
 
         private void WriteChi(TotalResults results)
@@ -45,7 +47,7 @@ namespace RandomNumberGenerator.Helpers
         {
             Console.WriteLine($"Testing mean:\n");
             Console.WriteLine($"Total samples: {_testsSettings.MeanTest.Samples.ToString(NumFormat, CultureInfo.InvariantCulture)}");
-            Console.WriteLine($"Max value: {_testsSettings.MeanTest.Max}");
+            Console.WriteLine($"Max value: {_testsSettings.MeanTest.Max.ToString(NumFormat, CultureInfo.InvariantCulture)}");
             Console.WriteLine($"Expected average: {_testsSettings.MeanTest.AvgExpected.ToString(NumFormat, CultureInfo.InvariantCulture)}\n");
 
             foreach (var meanResult in results.MeanTestResults)
@@ -62,6 +64,18 @@ namespace RandomNumberGenerator.Helpers
             foreach (var timeResult in results.TimeTestResults)
             {
                 Console.WriteLine($"{timeResult.RngName}: {timeResult.TimeElapsedMs} ms");
+            }
+        }
+
+        private void WriteStandardDeviation(TotalResults results)
+        {
+            Console.WriteLine($"Testing standard deviation:\n");
+            Console.WriteLine($"Total samples: {_testsSettings.StandardDeviationTest.Samples.ToString(NumFormat, CultureInfo.InvariantCulture)}");
+            Console.WriteLine($"Max value: {_testsSettings.StandardDeviationTest.Max.ToString(NumFormat, CultureInfo.InvariantCulture)}\n");
+
+            foreach (var standardDeviationResult in results.StandardDeviationTestResults)
+            {
+                Console.WriteLine($"{standardDeviationResult.RngName}: {standardDeviationResult.StandardDeviation.ToString("0.00", CultureInfo.InvariantCulture)}");
             }
         }
     }

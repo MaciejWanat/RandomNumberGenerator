@@ -53,6 +53,13 @@ namespace RandomNumberGenerator
                     _testRng.TimeTest(lehmerRng),
                     _testRng.TimeTest(wichmannRng),
                     _testRng.TimeTest(linearConRng)
+                },
+                StandardDeviationTestResults = new List<StandardDeviationTestResult>
+                {
+                    _testRng.StandardDeviationTest(buildInRng),
+                    _testRng.StandardDeviationTest(lehmerRng),
+                    _testRng.StandardDeviationTest(wichmannRng),
+                    _testRng.StandardDeviationTest(linearConRng)
                 }
             };
 

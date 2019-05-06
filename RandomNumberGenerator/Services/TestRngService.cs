@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Accord.Statistics.Testing;
 using Microsoft.Extensions.Options;
+using RandomNumberGenerator.Extensions;
 using RandomNumberGenerator.Models;
 using RandomNumberGenerator.Models.Settings;
 using RandomNumberGenerator.RNG;
@@ -102,6 +103,22 @@ namespace RandomNumberGenerator.Services
             return new TimeTestResult
             {
                 TimeElapsedMs = stopwatch.ElapsedMilliseconds,
+                RngName = rng.Name
+            };
+        }
+
+        public StandardDeviationTestResult StandardDeviationTest<T>(T rng) where T : IRngInterface
+        {
+            var values = new List<int>();
+
+            for (var i = 0; i < _testsSettings.StandardDeviationTest.Samples; i++)
+            {
+                values.Add(rng.Next(_testsSettings.StandardDeviationTest.Max));
+            }
+
+            return new StandardDeviationTestResult
+            {
+                StandardDeviation = values.StdDev(true),
                 RngName = rng.Name
             };
         }
