@@ -7,13 +7,13 @@ using RandomNumberGenerator.Models;
 using RandomNumberGenerator.Models.Settings;
 using RandomNumberGenerator.RNG;
 
-namespace RandomNumberGenerator
+namespace RandomNumberGenerator.Services
 {
-    public class TestRng
+    public class TestRngService : ITestRngService
     {
         private readonly TestsSettings _testsSettings;
 
-        public TestRng(IOptions<TestsSettings> testsSettings)
+        public TestRngService(IOptions<TestsSettings> testsSettings)
         {
             _testsSettings = testsSettings.Value;
         }

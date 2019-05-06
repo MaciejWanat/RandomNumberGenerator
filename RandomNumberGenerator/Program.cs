@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RandomNumberGenerator.Helpers;
 using RandomNumberGenerator.Models.Settings;
+using RandomNumberGenerator.Services;
 
 namespace RandomNumberGenerator
 {
@@ -30,8 +31,8 @@ namespace RandomNumberGenerator
             services.Configure<TestsSettings>(configuration.GetSection(nameof(TestsSettings)));
 
             services.AddTransient<App>();
-            services.AddScoped<TestRng>();
-            services.AddScoped<OutputBuilder>();
+            services.AddScoped<ITestRngService, TestRngService>();
+            services.AddScoped<IOutputBuilder, OutputBuilder>();
         }
 
     }

@@ -7,7 +7,7 @@ using RandomNumberGenerator.Models.Settings;
 
 namespace RandomNumberGenerator.Helpers
 {
-    public class OutputBuilder
+    public class OutputBuilder : IOutputBuilder
     {
         private const string NumFormat = "N0";
         private readonly TestsSettings _testsSettings;

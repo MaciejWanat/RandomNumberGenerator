@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
 using RandomNumberGenerator.Helpers;
 using RandomNumberGenerator.Models;
-using RandomNumberGenerator.Models.Settings;
 using RandomNumberGenerator.RNG;
+using RandomNumberGenerator.Services;
 
 namespace RandomNumberGenerator
 {
     public class App
     {
-        private readonly OutputBuilder _outputBuilder;
-        private readonly TestRng _testRng;
+        private readonly IOutputBuilder _outputBuilder;
+        private readonly ITestRngService _testRng;
 
-        public App(OutputBuilder outputBuilder, TestRng testRng)
+        public App(IOutputBuilder outputBuilder, ITestRngService testRng)
         {
             _outputBuilder = outputBuilder;
             _testRng = testRng;
