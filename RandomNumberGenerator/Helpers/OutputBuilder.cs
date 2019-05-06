@@ -1,34 +1,50 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using Microsoft.Extensions.Options;
 using RandomNumberGenerator.Models;
+using RandomNumberGenerator.Models.Settings;
 
 namespace RandomNumberGenerator.Helpers
 {
-    public static class OutputBuilder
+    public class OutputBuilder
     {
         private const string NumFormat = "N0";
+        private readonly TestsSettings _testsSettings;
 
-        public static void WriteOutput(ChiTestResult result)
+        public OutputBuilder(IOptions<TestsSettings> testsSettings)
         {
-            Console.WriteLine($"Testing distribution with the Chi Square test for the {result.RngName}:\n");
-            Console.WriteLine($"Total draws: {result.TotalDraws.ToString(NumFormat, CultureInfo.InvariantCulture)}");
-            Console.WriteLine($"Expected distribution: {result.SampleSize.ToString(NumFormat, CultureInfo.InvariantCulture)} for each number");
-            Console.WriteLine($"Observed distribution: \n{string.Join("\n", result.ObservedDict.OrderBy(k => k.Key))}");
-            Console.WriteLine($"\nPValue = {result.PValue}");
-            Console.WriteLine($"Significant = {result.IsSignificant}");
-            Console.WriteLine($"Time elapsed: {result.TimeElapsedMs} milliseconds");
-            Console.WriteLine("---------------------------------");
+            _testsSettings = testsSettings.Value;
         }
 
-        public static void WriteOutput(MeanTestResult result)
+        public void WriteOutput(TotalResults totalResults)
         {
-            Console.WriteLine($"Testing mean for the {result.RngName}:\n");
-            Console.WriteLine($"Total samples: {result.Samples.ToString(NumFormat, CultureInfo.InvariantCulture)}");
-            Console.WriteLine($"Max value: {result.Max}");
-            Console.WriteLine($"Expected average: {result.AvgExpected.ToString(NumFormat, CultureInfo.InvariantCulture)}");
-            Console.WriteLine($"Observed average: {result.AvgCalculated}");
-            Console.WriteLine($"Time elapsed: {result.TimeElapsedMs} milliseconds");
+            Console.WriteLine($"Testing distribution with the Chi Square tests:\n");
+            Console.WriteLine($"Total draws: {_testsSettings.ChiTest.TotalDraws.ToString(NumFormat, CultureInfo.InvariantCulture)}");
+            Console.WriteLine($"Expected distribution: {_testsSettings.ChiTest.SampleSize.ToString(NumFormat, CultureInfo.InvariantCulture)} for each number\n");
+
+            foreach (var chiTestResult in totalResults.ChiTestResults)
+            {
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine($"{chiTestResult.RngName}: \n{string.Join("\n", chiTestResult.ObservedDict.OrderBy(k => k.Key))}");
+                Console.WriteLine($"\nPValue = {chiTestResult.PValue}");
+                Console.WriteLine($"Significant = {chiTestResult.IsSignificant}");
+                Console.WriteLine($"Time elapsed: {chiTestResult.TimeElapsedMs} milliseconds");
+            }
+
+            Console.WriteLine("---------------------------------");
+
+            Console.WriteLine($"Testing mean:\n");
+            Console.WriteLine($"Total samples: {_testsSettings.MeanTest.Samples.ToString(NumFormat, CultureInfo.InvariantCulture)}");
+            Console.WriteLine($"Max value: {_testsSettings.MeanTest.Max}");
+            Console.WriteLine($"Expected average: {_testsSettings.MeanTest.AvgExpected.ToString(NumFormat, CultureInfo.InvariantCulture)}\n");
+
+            foreach (var meanResult in totalResults.MeanTestResults)
+            {
+                Console.WriteLine($"{meanResult.RngName}: {meanResult.AvgCalculated}");
+                // Console.WriteLine($"Time elapsed: {meanResult.TimeElapsedMs} milliseconds");
+            }
+
             Console.WriteLine("---------------------------------");
         }
     }

@@ -9,9 +9,5 @@ namespace RandomNumberGenerator.Models
         public double PValue { get; set; }
 
         public Dictionary<int, int> ObservedDict { get; set; }
-
-        public double SampleSize { get; set; }
-
-        public double TotalDraws { get; set; }
     }
 }

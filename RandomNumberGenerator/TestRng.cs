@@ -1,21 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Accord.Statistics.Testing;
+using Microsoft.Extensions.Options;
 using RandomNumberGenerator.Models;
+using RandomNumberGenerator.Models.Settings;
 using RandomNumberGenerator.RNG;
 
 namespace RandomNumberGenerator
 {
-    public static class TestRng
+    public class TestRng
     {
-        public static ChiTestResult ChiTest<T>(T rng) where T: IRngInterface
+        private readonly TestsSettings _testsSettings;
+
+        public TestRng(IOptions<TestsSettings> testsSettings)
+        {
+            _testsSettings = testsSettings.Value;
+        }
+
+        public ChiTestResult ChiTest<T>(T rng) where T: IRngInterface
         {
             var stopwatch = Stopwatch.StartNew();
 
-            double sampleSize = 100000;
-            var numsAmount = 10;
+            double sampleSize = _testsSettings.ChiTest.SampleSize;
+            var numsAmount = _testsSettings.ChiTest.NumsAmount;
             var totalDraws = sampleSize * numsAmount;
 
             var observedDict = new Dictionary<int, int>();
@@ -45,7 +53,7 @@ namespace RandomNumberGenerator
             var expectedEnumerable = Enumerable.Repeat(sampleSize, numsAmount);
             var expected = expectedEnumerable.ToArray();
 
-            var degreesOfFreedom = 1;
+            var degreesOfFreedom = _testsSettings.ChiTest.DegreesOfFreedom;
             var chi = new ChiSquareTest(expected, observed, degreesOfFreedom);
 
             var pValue = chi.PValue;
@@ -58,19 +66,17 @@ namespace RandomNumberGenerator
                 ObservedDict = observedDict,
                 PValue = pValue,
                 RngName = rng.Name,
-                SampleSize = sampleSize,
                 TimeElapsedMs = stopwatch.ElapsedMilliseconds,
-                TotalDraws = totalDraws
             };
         }
 
-        public static MeanTestResult MeanTest<T>(T rng) where T : IRngInterface
+        public MeanTestResult MeanTest<T>(T rng) where T : IRngInterface
         {
             var stopwatch = Stopwatch.StartNew();
 
             var sum = new long();
-            var samples = 1000000;
-            var max = 1000;
+            var samples = _testsSettings.MeanTest.Samples;
+            var max = _testsSettings.MeanTest.Max;
 
             for (var i = 0; i < samples; i++)
             {
@@ -78,17 +84,13 @@ namespace RandomNumberGenerator
             }
 
             var avg = (double) sum / samples;
-            var avgExpected = max / 2;
 
             stopwatch.Stop();
 
             return new MeanTestResult
             {
-                AvgExpected = avgExpected,
                 AvgCalculated = avg,
                 TimeElapsedMs = stopwatch.ElapsedMilliseconds,
-                Max = max,
-                Samples = samples,
                 RngName = rng.Name
             };
         }
