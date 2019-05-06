@@ -8,5 +8,7 @@ namespace RandomNumberGenerator.Services
         ChiTestResult ChiTest<T>(T rng) where T: IRngInterface;
 
         MeanTestResult MeanTest<T>(T rng) where T : IRngInterface;
+
+        TimeTestResult TimeTest<T>(T rng) where T : IRngInterface;
     }
 }

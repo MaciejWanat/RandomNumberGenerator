@@ -17,35 +17,52 @@ namespace RandomNumberGenerator.Helpers
             _testsSettings = testsSettings.Value;
         }
 
-        public void WriteOutput(TotalResults totalResults)
+        public void WriteOutput(TotalResults results)
+        {
+            WriteChi(results);
+            Console.WriteLine("---------------------------------");
+            WriteMean(results);
+            Console.WriteLine("---------------------------------");
+            WriteTime(results);
+        }
+
+        private void WriteChi(TotalResults results)
         {
             Console.WriteLine($"Testing distribution with the Chi Square tests:\n");
             Console.WriteLine($"Total draws: {_testsSettings.ChiTest.TotalDraws.ToString(NumFormat, CultureInfo.InvariantCulture)}");
             Console.WriteLine($"Expected distribution: {_testsSettings.ChiTest.SampleSize.ToString(NumFormat, CultureInfo.InvariantCulture)} for each number\n");
 
-            foreach (var chiTestResult in totalResults.ChiTestResults)
+            foreach (var chiTestResult in results.ChiTestResults)
             {
                 Console.WriteLine("---------------------------------");
                 Console.WriteLine($"{chiTestResult.RngName}: \n{string.Join("\n", chiTestResult.ObservedDict.OrderBy(k => k.Key))}");
                 Console.WriteLine($"\nPValue = {chiTestResult.PValue}");
                 Console.WriteLine($"Significant = {chiTestResult.IsSignificant}");
-                Console.WriteLine($"Time elapsed: {chiTestResult.TimeElapsedMs} milliseconds");
             }
+        }
 
-            Console.WriteLine("---------------------------------");
-
+        private void WriteMean(TotalResults results)
+        {
             Console.WriteLine($"Testing mean:\n");
             Console.WriteLine($"Total samples: {_testsSettings.MeanTest.Samples.ToString(NumFormat, CultureInfo.InvariantCulture)}");
             Console.WriteLine($"Max value: {_testsSettings.MeanTest.Max}");
             Console.WriteLine($"Expected average: {_testsSettings.MeanTest.AvgExpected.ToString(NumFormat, CultureInfo.InvariantCulture)}\n");
 
-            foreach (var meanResult in totalResults.MeanTestResults)
+            foreach (var meanResult in results.MeanTestResults)
             {
-                Console.WriteLine($"{meanResult.RngName}: {meanResult.AvgCalculated}");
-                // Console.WriteLine($"Time elapsed: {meanResult.TimeElapsedMs} milliseconds");
+                Console.WriteLine($"{meanResult.RngName}: {meanResult.AvgCalculated}, Error = {meanResult.Error}");
             }
+        }
 
-            Console.WriteLine("---------------------------------");
+        private void WriteTime(TotalResults results)
+        {
+            Console.WriteLine($"Testing time:\n");
+            Console.WriteLine($"Total samples: {_testsSettings.TimeTest.Samples.ToString(NumFormat, CultureInfo.InvariantCulture)}\n");
+
+            foreach (var timeResult in results.TimeTestResults)
+            {
+                Console.WriteLine($"{timeResult.RngName}: {timeResult.TimeElapsedMs} ms");
+            }
         }
     }
 }

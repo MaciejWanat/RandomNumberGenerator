@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Accord.Statistics.Testing;
@@ -20,8 +21,6 @@ namespace RandomNumberGenerator.Services
 
         public ChiTestResult ChiTest<T>(T rng) where T: IRngInterface
         {
-            var stopwatch = Stopwatch.StartNew();
-
             double sampleSize = _testsSettings.ChiTest.SampleSize;
             var numsAmount = _testsSettings.ChiTest.NumsAmount;
             var totalDraws = sampleSize * numsAmount;
@@ -58,22 +57,18 @@ namespace RandomNumberGenerator.Services
 
             var pValue = chi.PValue;
             var significant = chi.Significant;
-            stopwatch.Stop();
 
             return new ChiTestResult
             {
                 IsSignificant = significant,
                 ObservedDict = observedDict,
                 PValue = pValue,
-                RngName = rng.Name,
-                TimeElapsedMs = stopwatch.ElapsedMilliseconds,
+                RngName = rng.Name
             };
         }
 
         public MeanTestResult MeanTest<T>(T rng) where T : IRngInterface
         {
-            var stopwatch = Stopwatch.StartNew();
-
             var sum = new long();
             var samples = _testsSettings.MeanTest.Samples;
             var max = _testsSettings.MeanTest.Max;
@@ -85,11 +80,27 @@ namespace RandomNumberGenerator.Services
 
             var avg = (double) sum / samples;
 
-            stopwatch.Stop();
-
             return new MeanTestResult
             {
                 AvgCalculated = avg,
+                Error = Math.Abs(avg - _testsSettings.MeanTest.AvgExpected),
+                RngName = rng.Name
+            };
+        }
+
+        public TimeTestResult TimeTest<T>(T rng) where T : IRngInterface
+        {
+            var stopwatch = Stopwatch.StartNew();
+
+            for (var i = 0; i < _testsSettings.TimeTest.Samples; i++)
+            {
+                rng.Next(int.MaxValue);
+            }
+
+            stopwatch.Stop();
+
+            return new TimeTestResult
+            {
                 TimeElapsedMs = stopwatch.ElapsedMilliseconds,
                 RngName = rng.Name
             };

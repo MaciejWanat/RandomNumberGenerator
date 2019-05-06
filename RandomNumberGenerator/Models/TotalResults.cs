@@ -7,5 +7,7 @@ namespace RandomNumberGenerator.Models
         public List<ChiTestResult> ChiTestResults { get; set; }
 
         public List<MeanTestResult> MeanTestResults { get; set; }
+
+        public List<TimeTestResult> TimeTestResults { get; set; }
     }
 }

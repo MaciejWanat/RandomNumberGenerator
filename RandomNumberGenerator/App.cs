@@ -20,6 +20,8 @@ namespace RandomNumberGenerator
 
         public void Run()
         {
+            Console.WriteLine("Testing RNGs...\n");
+
             var rnd = new Random();
             var seed = rnd.Next();
             var wichSeed = rnd.Next(30000);
@@ -44,6 +46,13 @@ namespace RandomNumberGenerator
                     _testRng.MeanTest(lehmerRng),
                     _testRng.MeanTest(wichmannRng),
                     _testRng.MeanTest(linearConRng)
+                },
+                TimeTestResults = new List<TimeTestResult>
+                {
+                    _testRng.TimeTest(buildInRng),
+                    _testRng.TimeTest(lehmerRng),
+                    _testRng.TimeTest(wichmannRng),
+                    _testRng.TimeTest(linearConRng)
                 }
             };
 
