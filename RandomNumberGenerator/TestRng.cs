@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Accord.Statistics.Testing;
@@ -9,7 +10,7 @@ namespace RandomNumberGenerator
 {
     public static class TestRng
     {
-        public static ChiTestResult TestChi<T>(T rng) where T: IRngInterface
+        public static ChiTestResult ChiTest<T>(T rng) where T: IRngInterface
         {
             var stopwatch = Stopwatch.StartNew();
 
@@ -60,6 +61,35 @@ namespace RandomNumberGenerator
                 SampleSize = sampleSize,
                 TimeElapsedMs = stopwatch.ElapsedMilliseconds,
                 TotalDraws = totalDraws
+            };
+        }
+
+        public static MeanTestResult MeanTest<T>(T rng) where T : IRngInterface
+        {
+            var stopwatch = Stopwatch.StartNew();
+
+            var sum = new long();
+            var samples = 1000000;
+            var max = 1000;
+
+            for (var i = 0; i < samples; i++)
+            {
+                sum += rng.Next(max);
+            }
+
+            var avg = (double) sum / samples;
+            var avgExpected = max / 2;
+
+            stopwatch.Stop();
+
+            return new MeanTestResult
+            {
+                AvgExpected = avgExpected,
+                AvgCalculated = avg,
+                TimeElapsedMs = stopwatch.ElapsedMilliseconds,
+                Max = max,
+                Samples = samples,
+                RngName = rng.Name
             };
         }
     }

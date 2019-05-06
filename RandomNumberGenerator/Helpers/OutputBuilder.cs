@@ -20,5 +20,16 @@ namespace RandomNumberGenerator.Helpers
             Console.WriteLine($"Time elapsed: {result.TimeElapsedMs} milliseconds");
             Console.WriteLine("---------------------------------");
         }
+
+        public static void WriteOutput(MeanTestResult result)
+        {
+            Console.WriteLine($"Testing mean for the {result.RngName}:\n");
+            Console.WriteLine($"Total samples: {result.Samples.ToString(NumFormat, CultureInfo.InvariantCulture)}");
+            Console.WriteLine($"Max value: {result.Max}");
+            Console.WriteLine($"Expected average: {result.AvgExpected.ToString(NumFormat, CultureInfo.InvariantCulture)}");
+            Console.WriteLine($"Observed average: {result.AvgCalculated}");
+            Console.WriteLine($"Time elapsed: {result.TimeElapsedMs} milliseconds");
+            Console.WriteLine("---------------------------------");
+        }
     }
 }

@@ -17,17 +17,25 @@ namespace RandomNumberGenerator
             var linearConRng = new LinearConRng(seed);
             var buildInRng = new BuildInRng();
 
-            var buildInChiResult = TestRng.TestChi(buildInRng);
+            var buildInChiResult = TestRng.ChiTest(buildInRng);
+            var buildInMeanResult = TestRng.MeanTest(buildInRng);
             OutputBuilder.WriteOutput(buildInChiResult);
+            OutputBuilder.WriteOutput(buildInMeanResult);
 
-            var lehmerChiResult = TestRng.TestChi(lehmerRng);
+            var lehmerChiResult = TestRng.ChiTest(lehmerRng);
+            var lehmerMeanResult = TestRng.MeanTest(lehmerRng);
             OutputBuilder.WriteOutput(lehmerChiResult);
+            OutputBuilder.WriteOutput(lehmerMeanResult);
 
-            var wichmannChiResult = TestRng.TestChi(wichmannRng);
+            var wichmannChiResult = TestRng.ChiTest(wichmannRng);
+            var wichmannMeanResult = TestRng.MeanTest(wichmannRng);
             OutputBuilder.WriteOutput(wichmannChiResult);
+            OutputBuilder.WriteOutput(wichmannMeanResult);
 
-            var linearConResult = TestRng.TestChi(linearConRng);
+            var linearConResult = TestRng.ChiTest(linearConRng);
+            var linearMeanResult = TestRng.MeanTest(linearConRng);
             OutputBuilder.WriteOutput(linearConResult);
+            OutputBuilder.WriteOutput(linearMeanResult);
 
             Console.ReadLine();
         }
