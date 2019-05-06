@@ -119,6 +119,7 @@ namespace RandomNumberGenerator.Services
             return new StandardDeviationTestResult
             {
                 StandardDeviation = values.StdDev(true),
+                CoefficientOfVariation = values.CoeffVar(true),
                 RngName = rng.Name
             };
         }

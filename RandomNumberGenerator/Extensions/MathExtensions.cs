@@ -6,18 +6,30 @@ namespace RandomNumberGenerator.Extensions
 {
     public static class MathExtensions
     {
-        public static double StdDev(this IEnumerable<int> valuesRaw, bool asSample = false)
+        public static double StdDev(this IEnumerable<int> values, bool asSample = false)
         {
-            var values = valuesRaw.ToList();
-            var mean = (double) values.Sum() / values.Count();
+            double standardDeviation = 0;
+            var enumerable = values as int[] ?? values.ToArray();
+            var count = enumerable.Count();
 
-            var squaresQuery =
-                from int value in values
-                select (value - mean) * (value - mean);
+            if (count > 1)
+            {
+                var avg = enumerable.Average();
+                var sum = enumerable.Sum(d => (d - avg) * (d - avg));
+                standardDeviation = Math.Sqrt(sum / count);
+            }
 
-            var sumOfSquares = squaresQuery.Sum();
+            return standardDeviation;
+        }
 
-            return asSample ? Math.Sqrt(sumOfSquares / (values.Count() - 1)) : Math.Sqrt(sumOfSquares / values.Count());
+        public static double CoeffVar(this IEnumerable<int> values, bool asSample = false)
+        {
+            var enumerable = values.ToList();
+
+            var stdDev = StdDev(enumerable, asSample);
+            var avg = enumerable.Average();
+
+            return stdDev / avg;
         }
     }
 }

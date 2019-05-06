@@ -75,7 +75,8 @@ namespace RandomNumberGenerator.Helpers
 
             foreach (var standardDeviationResult in results.StandardDeviationTestResults)
             {
-                Console.WriteLine($"{standardDeviationResult.RngName}: {standardDeviationResult.StandardDeviation.ToString("0.00", CultureInfo.InvariantCulture)}");
+                Console.WriteLine($"{standardDeviationResult.RngName}: {standardDeviationResult.StandardDeviation.ToString("0.00", CultureInfo.InvariantCulture)}, "
+                                  + $"Coefficient of variation: {(standardDeviationResult.CoefficientOfVariation * 100).ToString("0.00", CultureInfo.InvariantCulture)}%");
             }
         }
     }
